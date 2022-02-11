@@ -142,6 +142,7 @@ Uncompress the kip to make it work with config editor: `hactool -t kip1 Atmosphe
 
 - CPU OC (up to ~ 2.1 GHz, depending on your CPU bin) is available mainly for emulation, but it does NOT work out of the box.
 
+- GPU OC (Higher than 921) Does not result in preformance improvements on Ersita, instead just producing more heat and drawing more power without any benefits. 
 
 ## Acknowledgement
 
