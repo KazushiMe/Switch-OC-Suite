@@ -25,6 +25,8 @@ Switch sysmodule allowing you to set cpu/gpu clocks according to the running app
 * 816
 * 714
 * 612
+* 510
+* 408
 
 ### GPU clocks
 
