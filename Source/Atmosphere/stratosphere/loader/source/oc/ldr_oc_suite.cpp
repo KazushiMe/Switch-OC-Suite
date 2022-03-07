@@ -943,7 +943,7 @@ namespace ams::ldr::oc {
         constexpr u32 CpuVoltLimit3   = 1227;
         constexpr u32 MemVoltHOS      = 1125'000;
         constexpr u32 MemClkOSLimit   = 1600'000;
-        constexpr u32 MemClkPllmLimit = 1866'000'000;
+        constexpr u32 MemClkPllmLimit = 1996'000'000;
 
         constexpr cpu_freq_cvb_table_t NewCpuTables[] = {
          // OldCpuTables
