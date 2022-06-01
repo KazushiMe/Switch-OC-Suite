@@ -182,6 +182,7 @@ If you are to install nro forwarders, stub `ValidateAcidSignature()` with `R_SUC
 Uncompress the kip to make it work with config editor: `hactool -t kip1 Atmosphere/stratosphere/loader/out/nintendo_nx_arm64_armv8a/release/loader.kip --uncompress=./loader.kip`
 
 
+- GPU OC (Higher than 921) Does not result in preformance improvements on Ersita, instead just producing more heat and drawing more power without any benefits. 
 
 ## Acknowledgement
 

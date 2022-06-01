@@ -30,6 +30,8 @@ uint32_t sysclk_g_freq_table_mem_hz[] = {
 };
 
 uint32_t sysclk_g_freq_table_cpu_hz[] = {
+    408000000,
+    510000000,
     612000000,
     714000000,
     816000000,
