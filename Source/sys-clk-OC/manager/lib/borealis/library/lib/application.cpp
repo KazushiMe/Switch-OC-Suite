@@ -226,27 +226,56 @@ bool Application::init(std::string title, Style style, Theme theme)
 #ifdef __SWITCH__
     {
         PlFontData font;
-
+        Result rc;
         // Standard font
-        Result rc = plGetSharedFontByType(&font, PlSharedFontType_Standard);
-        if (R_SUCCEEDED(rc))
+        if (R_SUCCEEDED(rc = plGetSharedFontByType(&font, PlSharedFontType_Standard)))
         {
             Logger::info("Using Switch shared font");
             Application::fontStash.regular = Application::loadFontFromMemory("regular", font.address, font.size, false);
         }
 
-        // Korean font
-        rc = plGetSharedFontByType(&font, PlSharedFontType_KO);
-        if (R_SUCCEEDED(rc))
+         // Local font
+        if (R_SUCCEEDED(rc = setInitialize()))
         {
-            Logger::info("Adding Switch shared Korean font");
-            Application::fontStash.korean = Application::loadFontFromMemory("korean", font.address, font.size, false);
-            nvgAddFallbackFontId(Application::vg, Application::fontStash.regular, Application::fontStash.korean);
+        u64 languageCode;
+        bool isLoadFontMemory{false};
+        if (R_SUCCEEDED(rc = setGetSystemLanguage(&languageCode)))
+            {
+                SetLanguage setLanguage;
+                if (R_SUCCEEDED(rc = setMakeLanguage(languageCode, &setLanguage)))
+                {
+                    switch (setLanguage) {
+                    case SetLanguage_ZHCN:
+                    case SetLanguage_ZHHANS:
+                        if (R_SUCCEEDED(rc = plGetSharedFontByType(&font, PlSharedFontType_ChineseSimplified)))
+                            isLoadFontMemory = true;
+                        break;
+                    case SetLanguage_KO:
+                        if (R_SUCCEEDED(rc = plGetSharedFontByType(&font, PlSharedFontType_KO)))
+                            isLoadFontMemory = true;
+                        break;
+                    case SetLanguage_ZHTW:
+                    case SetLanguage_ZHHANT:
+                        if (R_SUCCEEDED(rc = plGetSharedFontByType(&font, PlSharedFontType_ChineseTraditional)))
+                            isLoadFontMemory = true;
+                        break;
+                    default:
+                        break;
+                    }
+                    if (isLoadFontMemory) {
+                        Logger::info("Adding Switch shared local font");
+                        Application::fontStash.local = Application::loadFontFromMemory("local", font.address, font.size, false);
+                        nvgAddFallbackFontId(Application::vg, Application::fontStash.regular, Application::fontStash.local);
+                    }
+                    else
+                        Logger::error("switch: could not load local shared font: {:#x}", rc);
+                }
+            }
+            setExit();
         }
 
         // Extented font
-        rc = plGetSharedFontByType(&font, PlSharedFontType_NintendoExt);
-        if (R_SUCCEEDED(rc))
+        if (R_SUCCEEDED(rc = plGetSharedFontByType(&font, PlSharedFontType_NintendoExt)))
         {
             Logger::info("Using Switch shared symbols font");
             Application::fontStash.sharedSymbols = Application::loadFontFromMemory("symbols", font.address, font.size, false);
